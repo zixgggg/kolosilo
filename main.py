@@ -10,6 +10,7 @@ browser=QtWebEngineWidgets.QWebEngineView(parent=window)
 browser.load(QtCore.QUrl(index))
 
 bar=QtWidgets.QWidget()
+bar.hide()
 back_page_button=QtWidgets.QPushButton("back",parent=bar)
 #back_page_button.setGeometry(0,0,100,50)
 forward_page_button=QtWidgets.QPushButton("forward",parent=bar)
