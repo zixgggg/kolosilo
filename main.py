@@ -81,12 +81,15 @@ tab=QtWidgets.QTabWidget()
 tab.setTabsClosable(True)
 #tab.setChangeCurrentOnDrag(True)
 #tab.tabBar().setChangeCurrentOnDrag(True)
+#tab.tabBar.hide()
 tab.setMovable(True)
 tab.setUsesScrollButtons(True)
 tab.setElideMode(QtCore.Qt.TextElideMode.ElideRight)
 tab.setStyleSheet("""QTabBar::tab{max-width:150px; min-width:150px}""")
-def close_tab():
-    tab.removeTab(tab.currentIndex())
+def close_tab(index):
+    current_browser=tab.widget(index)
+    current_browser.deleteLater()
+    tab.removeTab(index)
     if tab.count()==0:
         sys.exit()
 #tab.tabCloseRequested.connect(lambda:tab.removeTab(tab.currentIndex()))
