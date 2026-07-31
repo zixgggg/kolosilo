@@ -84,7 +84,7 @@ tab.setTabsClosable(True)
 tab.setMovable(True)
 tab.setUsesScrollButtons(True)
 tab.setElideMode(QtCore.Qt.TextElideMode.ElideRight)
-tab.setStyleSheet("""QTabBar::tab{max-width: 150px}""")
+tab.setStyleSheet("""QTabBar::tab{max-width:150px; min-width:150px}""")
 def close_tab():
     tab.removeTab(tab.currentIndex())
     if tab.count()==0:
