@@ -5,10 +5,15 @@ app =QtWidgets.QApplication(sys.argv)
 window=QtWidgets.QWidget()
 window.setWindowTitle("retumilo")
 #index="https://www.google.com"
-index="https://www.google.com"
+index_page="https://www.google.com"
 browser=QtWebEngineWidgets.QWebEngineView(parent=window)
-browser.load(QtCore.QUrl(index))
-
+browser.load(QtCore.QUrl(index_page))
+"""
+class browser_class(QtWebEngineWidgets.QWebEngineView):
+    def __init__(self,url):
+        self.load(QtCore.QUrl(url))
+browser=browser_class(index_page)
+"""
 bar=QtWidgets.QWidget()
 bar.hide()
 back_page_button=QtWidgets.QPushButton("back",parent=bar)
@@ -67,25 +72,31 @@ bar_layout.addLayout(search_line_layout)
 bar_layout.addStretch()
 bar.setLayout(bar_layout)
 
-main_layout=QtWidgets.QVBoxLayout()
-main_layout.setContentsMargins(0, 0, 0, 0) # 去掉外邊框
-#main_layout.addLayout(bar_layout)
-main_layout.addWidget(bar)
-main_layout.addWidget(close_bar_rbutton)
-main_layout.addWidget(browser,stretch=1)
-window.setLayout(main_layout)
-window.move(0,0)
-window.resize(800,600)
-window.show()
-tab=QtWidgets.QTabWidget()
+tab=QtWidgets.QTabWidget(window)
 tab.setTabsClosable(True)
 #tab.setChangeCurrentOnDrag(True)
 #tab.tabBar().setChangeCurrentOnDrag(True)
-#tab.tabBar.hide()
+#tab.tabBar().hide()
 tab.setMovable(True)
 tab.setUsesScrollButtons(True)
+#tab.setTabBarAutoHide(True)
 tab.setElideMode(QtCore.Qt.TextElideMode.ElideRight)
 tab.setStyleSheet("""QTabBar::tab{max-width:150px; min-width:150px}""")
+
+def update_icon(icon,b):
+    #tab.setTabIcon(tab.indexOf(browser),browser.icon())
+    tab.setTabIcon(tab.indexOf(b),icon)
+#    if not icon.isNull()==True:
+#        tab.setTabIcon(tab.indexOf(b),icon)
+"""
+def update_icon( icon, b):
+    idx = tab.indexOf(b)
+    print(f"[Debug] 抓到 Icon！Tab 索引: {idx}, 是否無效: {icon.isNull()}")
+    if idx != -1 and not icon.isNull():
+        tab.setTabIcon(idx, icon)
+"""
+#browser.iconChanged.connect(lambda icon,b=browser: update_icon(icon,b))
+browser.iconChanged.connect(lambda icon,b=browser:tab.setTabIcon(tab.indexOf(b),icon))
 def close_tab(index):
     current_browser=tab.widget(index)
     current_browser.deleteLater()
@@ -94,10 +105,27 @@ def close_tab(index):
         sys.exit()
 #tab.tabCloseRequested.connect(lambda:tab.removeTab(tab.currentIndex()))
 tab.tabCloseRequested.connect(close_tab)
-t=browser.title()
+title=browser.title()
 browser.titleChanged.connect(lambda:tab.setTabText(tab.currentIndex(),browser.title()))
-tab.addTab(window,t)
+tab.addTab(browser,title)
 a=QtWidgets.QLabel("123")
 tab.addTab(a,"aa")
 tab.show()
+main_layout=QtWidgets.QVBoxLayout()
+main_layout.setContentsMargins(0, 0, 0, 0) # 去掉外邊框
+#main_layout.addLayout(bar_layout)
+main_layout.addWidget(bar)
+main_layout.addWidget(close_bar_rbutton)
+new_tab_button=QtWidgets.QPushButton("new tab")
+def add_new_tab():
+    b=QtWebEngineWidgets.QWebEngineView()
+    tab.addTab(b,title)
+new_tab_button.clicked.connect(add_new_tab)
+main_layout.addWidget(new_tab_button)
+#main_layout.addWidget(browser,stretch=1)
+main_layout.addWidget(tab,stretch=1)
+window.setLayout(main_layout)
+window.move(0,0)
+window.resize(800,600)
+window.show()
 sys.exit(app.exec())
