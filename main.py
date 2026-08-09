@@ -6,14 +6,15 @@ window=QtWidgets.QWidget()
 window.setWindowTitle("retumilo")
 #index="https://www.google.com"
 index_page="https://www.google.com"
-browser=QtWebEngineWidgets.QWebEngineView(parent=window)
-browser.load(QtCore.QUrl(index_page))
-"""
+#browser=QtWebEngineWidgets.QWebEngineView(parent=window)
+#browser.load(QtCore.QUrl(index_page))
+
 class browser_class(QtWebEngineWidgets.QWebEngineView):
     def __init__(self,url):
+        super().__init__()
         self.load(QtCore.QUrl(url))
 browser=browser_class(index_page)
-"""
+
 bar=QtWidgets.QWidget()
 bar.hide()
 back_page_button=QtWidgets.QPushButton("back",parent=bar)
