@@ -19,15 +19,68 @@ window=WindowClass()
 index_page="https://www.google.com"
 #browser=QtWebEngineWidgets.QWebEngineView(parent=window)
 #browser.load(QtCore.QUrl(index_page))
-
-class BrowserClass(QtWebEngineWidgets.QWebEngineView):
+google="https://www.google.com/search?q="
+duckduckgo="https://duckduckgo.com/?q="
+bing="https://www.bing.com/search?q="
+class WebViewClass(QtWebEngineWidgets.QWebEngineView):
     def __init__(self,url):
         super().__init__()
         self.load(QtCore.QUrl(url))
-browser=BrowserClass(index_page)
+webview=WebViewClass(index_page)
 
+class BarClass(QtWidgets.QWidget):
+    def __init__(self):
+        super().__init__()
+        self.hide()
+        self.back_page_button=QtWidgets.QPushButton("back")
+        #back_page_button.setGeometry(0,0,100,50)
+        self.forward_page_button=QtWidgets.QPushButton("forward")
+        self.reload_page_button=QtWidgets.QPushButton("reload")
+        self.enter_page_button=QtWidgets.QPushButton("enter")
+        self.search_input_line=QtWidgets.QLineEdit()
+        self.search_input_line.setPlaceholderText("search")
+        #url_input_line=QtWidgets.QLineEdit()
+        #input_line.setText("a")
+        
+        self.close_bar_rbutton=QtWidgets.QRadioButton("bar")
+        self.close_bar_rbutton.clicked.connect(lambda:self.setVisible(not bar.isVisible()))
+        self.back_page_button.clicked.connect(webviwe.back)
+        self.forward_page_button.clicked.connect(webviwe.forward)
+        self.reload_page_button.clicked.connect(webviwe.reload)
+        self.enter_page_button.clicked.connect(lambda:webviwe(google+search_input_line.displayText()))
+
+        self.back_page_button.setFixedSize(50,20)
+        self.forward_page_button.setFixedSize(50,20)
+        self.reload_page_button.setFixedSize(50,20)
+        self.enter_page_button.setFixedSize(50,20)
+        self.search_input_line.setFixedSize(150,20)
+
+        bar_layout=QtWidgets.QVBoxLayout()
+        page_button_layout=QtWidgets.QHBoxLayout()
+        search_line_layout=QtWidgets.QHBoxLayout()
+        
+        #b_layout.addWidget(back_page_button,alignment=QtCore.Qt.AlignmentFlag.AlignLeft)
+        page_button_layout.addWidget(back_page_button)
+        page_button_layout.addWidget(forward_page_button)
+        page_button_layout.addWidget(reload_page_button)
+        page_button_layout.addStretch()
+        bar_layout.addLayout(page_button_layout)
+        #back_page_button.hide()
+        
+        search_line_layout.addWidget(search_input_line)
+        search_line_layout.addWidget(enter_page_button)
+        search_line_layout.addStretch()
+        bar_layout.addLayout(search_line_layout)
+        bar_layout.addStretch()
+        self.setLayout(bar_layout)
 bar=QtWidgets.QWidget()
 bar.hide()
+"""
+class BackPageButtonClass(QtWidgets.QPushButton):
+    def __init__(self,text,parent)
+        super().__init__()
+        self.setText(text)
+"""
 back_page_button=QtWidgets.QPushButton("back",parent=bar)
 #back_page_button.setGeometry(0,0,100,50)
 forward_page_button=QtWidgets.QPushButton("forward",parent=bar)
@@ -56,6 +109,7 @@ bing="https://www.bing.com/search?q="
 def load_page(engine,q):
     browser.load(QtCore.QUrl(engine+q))
 enter_page_button.clicked.connect(lambda:load_page(google,search_input_line.displayText()))
+enter_page_button.clicked.connect(webviwe(google+search_input_line.displayText()))
 search_input_line.returnPressed.connect(lambda:load_page(google,search_input_line.displayText()))
 #url_input_line.returnPressed.connect(lambda:load_page(google,input_line.displayText()))
 
