@@ -1,19 +1,30 @@
 import sys
 from PyQt6 import QtWidgets,QtWebEngineWidgets,QtCore
+"""
+class AppClass(QtWidgets.QApplication):
+    def __init__(self,arg):
+        super().__init__(arg)
+        #self.QtWidgets.QApplication(arg)
+app =AppClass(sys.argv)
+"""
 app =QtWidgets.QApplication(sys.argv)
-
-window=QtWidgets.QWidget()
-window.setWindowTitle("retumilo")
+class WindowClass(QtWidgets.QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("retumilo")
+window=WindowClass()
+#window=QtWidgets.QWidget()
+#window.setWindowTitle("retumilo")
 #index="https://www.google.com"
 index_page="https://www.google.com"
 #browser=QtWebEngineWidgets.QWebEngineView(parent=window)
 #browser.load(QtCore.QUrl(index_page))
 
-class browser_class(QtWebEngineWidgets.QWebEngineView):
+class BrowserClass(QtWebEngineWidgets.QWebEngineView):
     def __init__(self,url):
         super().__init__()
         self.load(QtCore.QUrl(url))
-browser=browser_class(index_page)
+browser=BrowserClass(index_page)
 
 bar=QtWidgets.QWidget()
 bar.hide()
