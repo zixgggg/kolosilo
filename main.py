@@ -77,7 +77,7 @@ class BarClass(QtWidgets.QWidget):
         bar_layout.addStretch()
         self.setLayout(bar_layout)
 bar=BarClass()
-class PageTab(QtWidgets.QTabWidget):
+class PageTabClass(QtWidgets.QTabWidget):
     def __init__(self):
         super().__init__()
         self.setTabsClosable(True)
@@ -87,7 +87,7 @@ class PageTab(QtWidgets.QTabWidget):
         self.setStyleSheet("""QTabBar::tab{max-width:150px; min-width:150px}""")
         self.tabCloseRequested.connect(self.close_tab)
         webview.titleChanged.connect(lambda:self.setTabText(self.currentIndex(),webview.title()))
-        self.addTab(webview,title)
+        self.addTab(webview,webview.title())
         a=QtWidgets.QLabel("123")
         self.addTab(a,"aa")
         self.show()
@@ -101,7 +101,7 @@ class PageTab(QtWidgets.QTabWidget):
         webpage=WebViewClass(index_page)
         self.addTab(webpage,webview.title())
 #tab=QtWidgets.QTabWidget(window)
-tab=PageTab()
+tab=PageTabClass()
 main_layout=QtWidgets.QVBoxLayout()
 main_layout.setContentsMargins(0, 0, 0, 0) # 去掉外邊框
 #main_layout.addLayout(bar_layout)
