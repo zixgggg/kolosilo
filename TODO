@@ -1,9 +1,11 @@
 todo{
 	keybind
 	side tab bar
+	historical records
+	bookmark
 }
 done{
-	browser part
+	webview part
 	tab bar
 	bar
 }
