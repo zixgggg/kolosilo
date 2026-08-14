@@ -3,6 +3,21 @@ revision = 3
 requires-python = ">=3.13"
 
 [[package]]
+name = "koloso"
+version = "0.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "pyqt6" },
+    { name = "pyqt6-webengine" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "pyqt6", specifier = ">=6.11.0" },
+    { name = "pyqt6-webengine", specifier = ">=6.11.0" },
+]
+
+[[package]]
 name = "pyqt6"
 version = "6.11.0"
 source = { registry = "https://pypi.org/simple" }
@@ -79,19 +94,4 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/d4/2b/d0376a89cc465835351dc4d1813b8c10cd12dc8b1350201087ff75e20bc6/pyqt6_webengine_qt6-6.11.1-py3-none-manylinux_2_39_aarch64.whl", hash = "sha256:986571954200d89812211997e7e544eb48682ce06141957e668f6ff4375517b6", size = 111680319, upload-time = "2026-05-15T11:23:27.714Z" },
     { url = "https://files.pythonhosted.org/packages/83/0d/4826e0d24c34d85f57feeddbb26b1d359705d1c6952cbe214dd433e41e8a/pyqt6_webengine_qt6-6.11.1-py3-none-win_amd64.whl", hash = "sha256:16db64a3c658f3575b9c7c29aceb734714c24a2c8778e20caf277a593bc8ceb0", size = 132865252, upload-time = "2026-05-15T11:24:11.569Z" },
     { url = "https://files.pythonhosted.org/packages/27/cc/8d268ec85e76d6e2c236a715851fef21e6d0ae369fbb896ada996092b735/pyqt6_webengine_qt6-6.11.1-py3-none-win_arm64.whl", hash = "sha256:21aaa6c7c9a91076936baa4a1c02dd5a0cbd4c75238d5fd6a216736f654cf89a", size = 114693848, upload-time = "2026-05-15T11:24:42.684Z" },
-]
-
-[[package]]
-name = "retumilo"
-version = "0.1.0"
-source = { virtual = "." }
-dependencies = [
-    { name = "pyqt6" },
-    { name = "pyqt6-webengine" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "pyqt6", specifier = ">=6.11.0" },
-    { name = "pyqt6-webengine", specifier = ">=6.11.0" },
 ]

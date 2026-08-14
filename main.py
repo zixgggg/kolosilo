@@ -11,7 +11,7 @@ app =QtWidgets.QApplication(sys.argv)
 class WindowClass(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("retumilo")
+        self.setWindowTitle("koloso")
 window=WindowClass()
 #window=QtWidgets.QWidget()
 #window.setWindowTitle("retumilo")
