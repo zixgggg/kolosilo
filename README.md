@@ -1,2 +1,2 @@
-# koloso
+# kolosilo
 a simple web browser  
