@@ -86,8 +86,9 @@ class PageTabClass(QtWidgets.QTabWidget):
         self.setElideMode(QtCore.Qt.TextElideMode.ElideRight)
         self.setStyleSheet("""QTabBar::tab{max-width:150px; min-width:150px}""")
         self.tabCloseRequested.connect(self.close_tab)
-        webview.titleChanged.connect(lambda:self.setTabText(self.currentIndex(),webview.title()))
-        self.addTab(webview,webview.title())
+        
+        self.add_new_tab()
+        
         a=QtWidgets.QLabel("123")
         self.addTab(a,"aa")
         self.show()
@@ -100,6 +101,8 @@ class PageTabClass(QtWidgets.QTabWidget):
     def add_new_tab(self):
         webpage=WebViewClass(index_page)
         self.addTab(webpage,webview.title())
+        webpage.titleChanged.connect(lambda:self.setTabText(self.indexOf(webpage),webpage.title()))
+        webpage.iconChanged.connect(lambda:self.setTabIcon(self.indexOf(webpage),webpage.icon()))
 #tab=QtWidgets.QTabWidget(window)
 tab=PageTabClass()
 main_layout=QtWidgets.QVBoxLayout()
