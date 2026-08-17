@@ -26,57 +26,8 @@ class WebViewClass(QtWebEngineWidgets.QWebEngineView):
     def __init__(self,url):
         super().__init__()
         self.load(QtCore.QUrl(url))
-webview=WebViewClass(index_page)
 
-class BarClass(QtWidgets.QWidget):
-    def __init__(self):
-        super().__init__()
-        self.hide()
-        self.back_page_button=QtWidgets.QPushButton("back")
-        #back_page_button.setGeometry(0,0,100,50)
-        self.forward_page_button=QtWidgets.QPushButton("forward")
-        self.reload_page_button=QtWidgets.QPushButton("reload")
-        self.enter_page_button=QtWidgets.QPushButton("enter")
-        self.search_input_line=QtWidgets.QLineEdit()
-        self.search_input_line.setPlaceholderText("search")
-        #url_input_line=QtWidgets.QLineEdit()
-        #input_line.setText("a")
-        
-        self.close_bar_rbutton=QtWidgets.QRadioButton("bar")
-        self.close_bar_rbutton.clicked.connect(lambda:self.setVisible(not self.isVisible()))
-        self.back_page_button.clicked.connect(webview.back)
-        self.forward_page_button.clicked.connect(webview.forward)
-        self.reload_page_button.clicked.connect(webview.reload)
-        self.enter_page_button.clicked.connect(lambda:webview.load(QtCore.QUrl(google+self.search_input_line.displayText())))
-        #self.search_input_line.returnPressed.connect(lambda:webview.load(QtCore.QUrl(google+self.search_input_line.displayText())))
-        self.search_input_line.returnPressed.connect(self.enter_page_button.click)
-        
 
-        self.back_page_button.setFixedSize(50,20)
-        self.forward_page_button.setFixedSize(50,20)
-        self.reload_page_button.setFixedSize(50,20)
-        self.enter_page_button.setFixedSize(50,20)
-        self.search_input_line.setFixedSize(150,20)
-
-        bar_layout=QtWidgets.QVBoxLayout()
-        page_button_layout=QtWidgets.QHBoxLayout()
-        search_line_layout=QtWidgets.QHBoxLayout()
-        
-        #b_layout.addWidget(back_page_button,alignment=QtCore.Qt.AlignmentFlag.AlignLeft)
-        page_button_layout.addWidget(self.back_page_button)
-        page_button_layout.addWidget(self.forward_page_button)
-        page_button_layout.addWidget(self.reload_page_button)
-        page_button_layout.addStretch()
-        bar_layout.addLayout(page_button_layout)
-        #back_page_button.hide()
-        
-        search_line_layout.addWidget(self.search_input_line)
-        search_line_layout.addWidget(self.enter_page_button)
-        search_line_layout.addStretch()
-        bar_layout.addLayout(search_line_layout)
-        bar_layout.addStretch()
-        self.setLayout(bar_layout)
-bar=BarClass()
 class PageTabClass(QtWidgets.QTabWidget):
     def __init__(self):
         super().__init__()
@@ -93,26 +44,86 @@ class PageTabClass(QtWidgets.QTabWidget):
         self.addTab(a,"aa")
         self.show()
     def close_tab(self,index):
-        current_webpage=self.widget(index)
-        current_webpage.deleteLater()
+        current_webview=self.widget(index)
+        current_webview.deleteLater()
         self.removeTab(index)
         if self.count()==0:
             sys.exit()
     def add_new_tab(self):
-        webpage=WebViewClass(index_page)
-        self.addTab(webpage,webview.title())
-        webpage.titleChanged.connect(lambda:self.setTabText(self.indexOf(webpage),webpage.title()))
-        webpage.iconChanged.connect(lambda:self.setTabIcon(self.indexOf(webpage),webpage.icon()))
+        webview=WebViewClass(index_page)
+        self.addTab(webview,webview.title())
+        webview.titleChanged.connect(lambda:self.setTabText(self.indexOf(webview),webview.title()))
+        webview.iconChanged.connect(lambda:self.setTabIcon(self.indexOf(webview),webview.icon()))
+        webview.urlChanged.connect(lambda:bar.url_input_line.setText(self.currentWidget().url().toString()))
 #tab=QtWidgets.QTabWidget(window)
 tab=PageTabClass()
+
+def current_webview():
+    widget=tab.currentWidget()
+    if isinstance(widget,WebViewClass):
+        return widget
+    else:
+        return None
+class BarClass(QtWidgets.QWidget):
+    def __init__(self):
+        super().__init__()
+        self.hide()
+        self.back_page_button=QtWidgets.QPushButton("back")
+        #back_page_button.setGeometry(0,0,100,50)
+        self.forward_page_button=QtWidgets.QPushButton("forward")
+        self.reload_page_button=QtWidgets.QPushButton("reload")
+        self.enter_page_button=QtWidgets.QPushButton("enter")
+        self.url_input_line=QtWidgets.QLineEdit()
+        self.url_input_line.setPlaceholderText("URL (https:// , file://...)")
+        #url_input_line=QtWidgets.QLineEdit()
+        #input_line.setText("a")
+        self.new_tab_button=QtWidgets.QPushButton("new tab")
+        
+        
+        self.close_bar_rbutton=QtWidgets.QRadioButton("bar")
+        self.close_bar_rbutton.clicked.connect(lambda:self.setVisible(not self.isVisible()))
+        self.back_page_button.clicked.connect(lambda:current_webview().back())
+        self.forward_page_button.clicked.connect(lambda:current_webview().forward())
+        self.reload_page_button.clicked.connect(lambda:current_webview().reload())
+        self.enter_page_button.clicked.connect(lambda:current_webview().load(QtCore.QUrl(self.url_input_line.text())))
+        #self.search_input_line.returnPressed.connect(lambda:webview.load(QtCore.QUrl(google+self.search_input_line.displayText())))
+        self.url_input_line.returnPressed.connect(self.enter_page_button.click)
+        self.new_tab_button.clicked.connect(tab.add_new_tab)
+
+
+        self.back_page_button.setFixedSize(50,20)
+        self.forward_page_button.setFixedSize(50,20)
+        self.reload_page_button.setFixedSize(50,20)
+        self.enter_page_button.setFixedSize(50,20)
+        self.url_input_line.setFixedSize(500,20)
+        self.new_tab_button.setFixedSize(50,20)
+
+
+        bar_layout=QtWidgets.QVBoxLayout()
+        page_button_layout=QtWidgets.QHBoxLayout()
+        
+        
+        #b_layout.addWidget(back_page_button,alignment=QtCore.Qt.AlignmentFlag.AlignLeft)
+        page_button_layout.addWidget(self.back_page_button)
+        page_button_layout.addWidget(self.forward_page_button)
+        page_button_layout.addWidget(self.reload_page_button)
+        page_button_layout.addWidget(self.url_input_line)
+        page_button_layout.addWidget(self.enter_page_button)
+        page_button_layout.addStretch()
+        page_button_layout.addWidget(self.new_tab_button)
+        
+        bar_layout.addLayout(page_button_layout)
+        #back_page_button.hide()
+        
+        
+        bar_layout.addStretch()
+        self.setLayout(bar_layout)
+bar=BarClass()
 main_layout=QtWidgets.QVBoxLayout()
 main_layout.setContentsMargins(0, 0, 0, 0) # 去掉外邊框
 #main_layout.addLayout(bar_layout)
 main_layout.addWidget(bar)
 main_layout.addWidget(bar.close_bar_rbutton)
-new_tab_button=QtWidgets.QPushButton("new tab")
-new_tab_button.clicked.connect(tab.add_new_tab)
-main_layout.addWidget(new_tab_button)
 #main_layout.addWidget(browser,stretch=1)
 main_layout.addWidget(tab,stretch=1)
 window.setLayout(main_layout)
