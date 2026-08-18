@@ -55,7 +55,6 @@ class PageTabClass(QtWidgets.QTabWidget):
         webview.titleChanged.connect(lambda:self.setTabText(self.indexOf(webview),webview.title()))
         webview.iconChanged.connect(lambda:self.setTabIcon(self.indexOf(webview),webview.icon()))
         webview.urlChanged.connect(lambda:bar.url_input_line.setText(self.currentWidget().url().toString()))
-#tab=QtWidgets.QTabWidget(window)
 tab=PageTabClass()
 
 def current_webview():
@@ -82,10 +81,10 @@ class BarClass(QtWidgets.QWidget):
         
         self.close_bar_rbutton=QtWidgets.QRadioButton("bar")
         self.close_bar_rbutton.clicked.connect(lambda:self.setVisible(not self.isVisible()))
-        self.back_page_button.clicked.connect(lambda:current_webview().back())
-        self.forward_page_button.clicked.connect(lambda:current_webview().forward())
-        self.reload_page_button.clicked.connect(lambda:current_webview().reload())
-        self.enter_page_button.clicked.connect(lambda:current_webview().load(QtCore.QUrl(self.url_input_line.text())))
+        self.back_page_button.clicked.connect(lambda:current_webview() and current_webview().back())
+        self.forward_page_button.clicked.connect(lambda:current_webview() and current_webview().forward())
+        self.reload_page_button.clicked.connect(lambda:current_webview() and current_webview().reload())
+        self.enter_page_button.clicked.connect(lambda:current_webview() and current_webview().load(QtCore.QUrl(self.url_input_line.text())))
         #self.search_input_line.returnPressed.connect(lambda:webview.load(QtCore.QUrl(google+self.search_input_line.displayText())))
         self.url_input_line.returnPressed.connect(self.enter_page_button.click)
         self.new_tab_button.clicked.connect(tab.add_new_tab)
@@ -95,7 +94,7 @@ class BarClass(QtWidgets.QWidget):
         self.forward_page_button.setFixedSize(50,20)
         self.reload_page_button.setFixedSize(50,20)
         self.enter_page_button.setFixedSize(50,20)
-        self.url_input_line.setFixedSize(500,20)
+        self.url_input_line.setFixedSize(1000,20)
         self.new_tab_button.setFixedSize(50,20)
 
 
