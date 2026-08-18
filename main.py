@@ -49,12 +49,19 @@ class PageTabClass(QtWidgets.QTabWidget):
         self.removeTab(index)
         if self.count()==0:
             sys.exit()
+    def update_url_box(self):
+        if isinstance(self.currentWidget(),WebViewClass)==False:
+            bar.url_box.setText("")
+        else:
+            bar.url_box.setText(self.currentWidget().url().toString())
     def add_new_tab(self):
         webview=WebViewClass(index_page)
         self.addTab(webview,webview.title())
         webview.titleChanged.connect(lambda:self.setTabText(self.indexOf(webview),webview.title()))
         webview.iconChanged.connect(lambda:self.setTabIcon(self.indexOf(webview),webview.icon()))
-        webview.urlChanged.connect(lambda:bar.url_input_line.setText(self.currentWidget().url().toString()))
+        #webview.urlChanged.connect(lambda:bar.url_input_line.setText(self.currentWidget().url().toString()))
+        webview.urlChanged.connect(self.update_url_box)
+        self.currentChanged.connect(self.update_url_box)
 tab=PageTabClass()
 
 def current_webview():
@@ -72,8 +79,8 @@ class BarClass(QtWidgets.QWidget):
         self.forward_page_button=QtWidgets.QPushButton("forward")
         self.reload_page_button=QtWidgets.QPushButton("reload")
         self.enter_page_button=QtWidgets.QPushButton("enter")
-        self.url_input_line=QtWidgets.QLineEdit()
-        self.url_input_line.setPlaceholderText("URL (https:// , file://...)")
+        self.url_box=QtWidgets.QLineEdit()
+        self.url_box.setPlaceholderText("URL (https:// , file://...)")
         #url_input_line=QtWidgets.QLineEdit()
         #input_line.setText("a")
         self.new_tab_button=QtWidgets.QPushButton("new tab")
@@ -84,9 +91,9 @@ class BarClass(QtWidgets.QWidget):
         self.back_page_button.clicked.connect(lambda:current_webview() and current_webview().back())
         self.forward_page_button.clicked.connect(lambda:current_webview() and current_webview().forward())
         self.reload_page_button.clicked.connect(lambda:current_webview() and current_webview().reload())
-        self.enter_page_button.clicked.connect(lambda:current_webview() and current_webview().load(QtCore.QUrl(self.url_input_line.text())))
+        self.enter_page_button.clicked.connect(lambda:current_webview() and current_webview().load(QtCore.QUrl(self.url_box.text())))
         #self.search_input_line.returnPressed.connect(lambda:webview.load(QtCore.QUrl(google+self.search_input_line.displayText())))
-        self.url_input_line.returnPressed.connect(self.enter_page_button.click)
+        self.url_box.returnPressed.connect(self.enter_page_button.click)
         self.new_tab_button.clicked.connect(tab.add_new_tab)
 
 
@@ -94,7 +101,7 @@ class BarClass(QtWidgets.QWidget):
         self.forward_page_button.setFixedSize(50,20)
         self.reload_page_button.setFixedSize(50,20)
         self.enter_page_button.setFixedSize(50,20)
-        self.url_input_line.setFixedSize(1000,20)
+        self.url_box.setFixedSize(1000,20)
         self.new_tab_button.setFixedSize(50,20)
 
 
@@ -106,7 +113,7 @@ class BarClass(QtWidgets.QWidget):
         page_button_layout.addWidget(self.back_page_button)
         page_button_layout.addWidget(self.forward_page_button)
         page_button_layout.addWidget(self.reload_page_button)
-        page_button_layout.addWidget(self.url_input_line)
+        page_button_layout.addWidget(self.url_box)
         page_button_layout.addWidget(self.enter_page_button)
         page_button_layout.addStretch()
         page_button_layout.addWidget(self.new_tab_button)
