@@ -1,2 +1,2 @@
-# kolosilo
+# portalo
 a simple web browser  
