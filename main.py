@@ -166,10 +166,12 @@ main_layout.addWidget(bar)
 #main_layout.addWidget(bar.toggle_tab_button)
 #main_layout.addWidget(bar.close_bar_rbutton)
 #main_layout.addWidget(browser,stretch=1)
+"""
 tab_and_bar_status=QtWidgets.QHBoxLayout()
 tab_and_bar_status.addWidget(bar.toggle_tab_cb)
 tab_and_bar_status.addWidget(bar.toggle_bar_cb)
 main_layout.addLayout(tab_and_bar_status)
+"""
 main_layout.addWidget(tab,stretch=1)
 window.setLayout(main_layout)
 window.move(0,0)
