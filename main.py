@@ -1,5 +1,5 @@
 import sys
-from PyQt6 import QtWidgets,QtWebEngineWidgets,QtCore
+from PyQt6 import QtWidgets,QtWebEngineWidgets,QtCore,QtGui
 """
 class AppClass(QtWidgets.QApplication):
     def __init__(self,arg):
@@ -26,7 +26,21 @@ class WebViewClass(QtWebEngineWidgets.QWebEngineView):
     def __init__(self,url):
         super().__init__()
         self.load(QtCore.QUrl(url))
-    
+    def contextMenuEvent(self ,event):
+        menu=self.createStandardContextMenu()
+        #request=self.lastContextMenuRequest()
+        #flags=request.editFlags()
+        bar_visible=menu.addAction("bar visible")
+        bar_visible.setCheckable(True)
+        bar_visible.setChecked(bar.isVisible())
+        bar_visible.toggled.connect(bar.toggle_bar_cb.setChecked)
+        
+        tab_visible=menu.addAction("tab visible")
+        tab_visible.setCheckable(True)
+        tab_visible.setChecked(tab.tabBar().isVisible())
+        tab_visible.toggled.connect(bar.toggle_tab_cb.setChecked)
+        #if QWebEngineContextMenuRequest.EditFlag.CanTranslate in flags:
+        menu.exec(QtGui.QCursor.pos())
 
 class PageTabClass(QtWidgets.QTabWidget):
     def __init__(self):
@@ -89,6 +103,7 @@ class BarClass(QtWidgets.QWidget):
         
         self.toggle_bar_cb=QtWidgets.QCheckBox("bar")
         #self.close_bar_rbutton.clicked.connect(lambda:self.setVisible(not self.isVisible()))
+
         self.toggle_bar_cb.toggled.connect(self.setVisible)
         self.back_page_button.clicked.connect(lambda:current_webview() and current_webview().back())
         self.forward_page_button.clicked.connect(lambda:current_webview() and current_webview().forward())
@@ -107,10 +122,7 @@ class BarClass(QtWidgets.QWidget):
         #self.toggle_tab_button.clicked.connect(lambda:tab.tabBar().setVisible(not tab.tabBar().isVisible()))
         self.new_tab_button.clicked.connect(tab.add_new_tab)
         self.show()
-        if tab.tabBar().isVisible()==True:
-            self.toggle_tab_cb.setChecked(True)
-        if self.isVisible()==True:
-            self.toggle_bar_cb.setChecked(True)
+
         
 
         self.back_page_button.setFixedSize(50,20)
@@ -143,8 +155,10 @@ class BarClass(QtWidgets.QWidget):
 bar=BarClass()
 if tab.tabBar().isVisible()==True:
     bar.toggle_tab_cb.setChecked(True)
+    tab_stat=True
 if bar.isVisible()==True:
     bar.toggle_bar_cb.setChecked(True)
+    bar_stat=True
 main_layout=QtWidgets.QVBoxLayout()
 main_layout.setContentsMargins(0, 0, 0, 0) # 去掉外邊框
 #main_layout.addLayout(bar_layout)
