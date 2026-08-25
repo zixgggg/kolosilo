@@ -17,6 +17,7 @@ window=WindowClass()
 #window.setWindowTitle("retumilo")
 #index="https://www.google.com"
 index_page="https://www.google.com"
+#index_page="about:blank"
 #browser=QtWebEngineWidgets.QWebEngineView(parent=window)
 #browser.load(QtCore.QUrl(index_page))
 google="https://www.google.com/search?q="
@@ -51,11 +52,10 @@ class PageTabClass(QtWidgets.QTabWidget):
         self.setElideMode(QtCore.Qt.TextElideMode.ElideRight)
         self.setStyleSheet("""QTabBar::tab{max-width:150px; min-width:150px}""")
         self.tabCloseRequested.connect(self.close_tab)
-        
         self.add_new_tab()
         
-        a=QtWidgets.QLabel("123")
-        self.addTab(a,"aa")
+        #a=QtWidgets.QLabel("123")
+        #self.addTab(a,"aa")
         self.show()
     def close_tab(self,index):
         current_webview=self.widget(index)
@@ -76,14 +76,17 @@ class PageTabClass(QtWidgets.QTabWidget):
         #webview.urlChanged.connect(lambda:bar.url_input_line.setText(self.currentWidget().url().toString()))
         webview.urlChanged.connect(self.update_url_box)
         self.currentChanged.connect(self.update_url_box)
+        webview.loadStarted.connect(lambda:bar.loading_stat.setText("loading..."))
+        webview.loadFinished.connect(lambda:bar.loading_stat.setText("loading finished"))
+        #webview.loadStarted.connect(self.)
 tab=PageTabClass()
-
 def current_webview():
     widget=tab.currentWidget()
     if isinstance(widget,WebViewClass):
         return widget
     else:
         return None
+
 class BarClass(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
@@ -99,8 +102,8 @@ class BarClass(QtWidgets.QWidget):
         #input_line.setText("a")
         self.toggle_tab_cb=QtWidgets.QCheckBox("tab")
         self.new_tab_button=QtWidgets.QPushButton("new tab")
-        
-        
+        self.loading_stat=QtWidgets.QLabel("")
+
         self.toggle_bar_cb=QtWidgets.QCheckBox("bar")
         #self.close_bar_rbutton.clicked.connect(lambda:self.setVisible(not self.isVisible()))
 
@@ -142,6 +145,7 @@ class BarClass(QtWidgets.QWidget):
         page_button_layout.addWidget(self.reload_page_button)
         page_button_layout.addWidget(self.url_box)
         page_button_layout.addWidget(self.enter_page_button)
+        page_button_layout.addWidget(self.loading_stat)
         page_button_layout.addStretch()
         #page_button_layout.addWidget(self.toggle_tab_button)
         page_button_layout.addWidget(self.new_tab_button)
