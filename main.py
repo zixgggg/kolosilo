@@ -1,5 +1,5 @@
 import sys
-from PyQt6 import QtWidgets,QtWebEngineWidgets,QtCore,QtGui
+from PyQt6 import QtWidgets,QtWebEngineWidgets,QtCore,QtGui,QtWebEngineCore
 """
 class AppClass(QtWidgets.QApplication):
     def __init__(self,arg):
@@ -8,11 +8,19 @@ class AppClass(QtWidgets.QApplication):
 app =AppClass(sys.argv)
 """
 app =QtWidgets.QApplication(sys.argv)
+app.setApplicationName("portalo")
+app.setOrganizationName("zixgggg")
 class WindowClass(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("portalo")
 window=WindowClass()
+default_profile=QtWebEngineCore.QWebEngineProfile("default_portalo")
+default_profile.PersistentCookiesPolicy.AllowPersistentCookies
+default_profile.setPersistentCookiesPolicy(default_profile.PersistentCookiesPolicy.AllowPersistentCookies)
+#print("資料存在這裡:", QtWebEngineCore.QWebEngineProfile.defaultProfile().persistentStoragePath())
+print("profile path:", default_profile.persistentStoragePath())
+print("not allow cookie:",default_profile.isOffTheRecord())
 #window=QtWidgets.QWidget()
 #window.setWindowTitle("retumilo")
 #index="https://www.google.com"
@@ -24,8 +32,8 @@ google="https://www.google.com/search?q="
 duckduckgo="https://duckduckgo.com/?q="
 bing="https://www.bing.com/search?q="
 class WebViewClass(QtWebEngineWidgets.QWebEngineView):
-    def __init__(self,url):
-        super().__init__()
+    def __init__(self,url,profile):
+        super().__init__(profile)
         self.load(QtCore.QUrl(url))
     def contextMenuEvent(self ,event):
         menu=self.createStandardContextMenu()
@@ -69,7 +77,7 @@ class PageTabClass(QtWidgets.QTabWidget):
         else:
             bar.url_box.setText(self.currentWidget().url().toString())
     def add_new_tab(self):
-        webview=WebViewClass(index_page)
+        webview=WebViewClass(index_page,default_profile)
         self.addTab(webview,webview.title())
         webview.titleChanged.connect(lambda:self.setTabText(self.indexOf(webview),webview.title()))
         webview.iconChanged.connect(lambda:self.setTabIcon(self.indexOf(webview),webview.icon()))
@@ -79,6 +87,7 @@ class PageTabClass(QtWidgets.QTabWidget):
         webview.loadStarted.connect(lambda:bar.loading_stat.setText("loading..."))
         webview.loadFinished.connect(lambda:bar.loading_stat.setText("loading finished"))
         #webview.loadStarted.connect(self.)
+        
 tab=PageTabClass()
 def current_webview():
     widget=tab.currentWidget()
