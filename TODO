@@ -3,11 +3,14 @@ todo{
 	side tab bar
 	historical records
 	bookmark
+	incognito mode
+	focus on new page
 }
 done{
 	webview part
 	tab bar
 	bar
 	context menu
+	loading status
 }
 	
