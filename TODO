@@ -4,7 +4,8 @@ todo{
 	historical records
 	bookmark
 	incognito mode
-	focus on new page
+	focus on new tab
+	middle mouse click on web index can open new tab
 }
 done{
 	webview part
