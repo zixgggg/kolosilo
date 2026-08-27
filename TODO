@@ -4,7 +4,6 @@ todo{
 	historical records
 	bookmark
 	incognito mode
-	focus on new tab
 	middle mouse click on web index can open new tab
 }
 done{
@@ -13,5 +12,6 @@ done{
 	bar
 	context menu
 	loading status
+	focus on new tab
 }
 	
