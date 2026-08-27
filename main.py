@@ -79,6 +79,7 @@ class PageTabClass(QtWidgets.QTabWidget):
     def add_new_tab(self):
         webview=WebViewClass(index_page,default_profile)
         self.addTab(webview,webview.title())
+        self.setCurrentWidget(webview)
         webview.titleChanged.connect(lambda:self.setTabText(self.indexOf(webview),webview.title()))
         webview.iconChanged.connect(lambda:self.setTabIcon(self.indexOf(webview),webview.icon()))
         #webview.urlChanged.connect(lambda:bar.url_input_line.setText(self.currentWidget().url().toString()))
